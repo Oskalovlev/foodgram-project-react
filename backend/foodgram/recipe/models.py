@@ -5,7 +5,7 @@ from user.models import CustomUser
 
 
 class NameModel(models.Model):
-    """Абстрактная модель представления названия"""
+    """Абстрактная модель представления <названия>."""
 
     name = models.CharField(
         'Название',
@@ -93,7 +93,7 @@ class Recipe(NameModel):
     tags = models.ManyToManyField(
         Tag,
         verbose_name='Тэги',
-        )
+    )
     pub_date = models.DateField(
         'Дата публикации',
         auto_now_add=True,
@@ -146,7 +146,7 @@ class IngredientInRecipe(models.Model):
 
 
 class UserAndRecipeModel(models.Model):
-    """Абстрактная модель представления пользователя и рецепта"""
+    """Абстрактная модель представления <пользователя> и <рецепта>."""
 
     user = models.ForeignKey(
         CustomUser,

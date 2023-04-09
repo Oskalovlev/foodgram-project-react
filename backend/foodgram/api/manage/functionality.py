@@ -12,6 +12,7 @@ from recipe.models import Recipe
 
 def add_and_del(add_serializer, model, request, recipe_id):
     """Опция добавления и удаления рецепта."""
+
     user = request.user
     data = {'user': user.id,
             'recipe': recipe_id}
@@ -30,6 +31,7 @@ def add_and_del(add_serializer, model, request, recipe_id):
 @receiver(post_delete, sender=Recipe)
 def delete_image(sender, instance, *a, **kw):
     """Удаляет картинку при удаление рецепта."""
+
     image = Path(instance.image.path)
     if image.exists():
         image.unlink()
@@ -38,7 +40,8 @@ def delete_image(sender, instance, *a, **kw):
 def out_list_ingredients(self, request, ingredients):
     """Загружает файл *.txt со списком покупок.
         Доступно только авторизованным пользователям.
-        """
+    """
+
     user = self.request.user
     filename = f'{user.username}_shopping_list.txt'
 

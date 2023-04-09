@@ -12,8 +12,16 @@ class IngredientInline(admin.TabularInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'pub_date', 'name', 'text', 'cooking_time',
-                    'get_tags', 'get_ingredients', 'count_favorites',)
+    list_display = (
+        'id',
+        'name',
+        'text',
+        'cooking_time',
+        'pub_date',
+        'get_tags',
+        'get_ingredients',
+        'count_favorites',
+    )
     readonly_fields = ('count_favorites',)
     list_filter = ('name', 'tags',)
     search_fields = (
@@ -21,26 +29,31 @@ class RecipeAdmin(admin.ModelAdmin):
         'author__email', 'ingredient__name')
     empty_value_display = '--empty--'
     inlines = (IngredientInline,)
-    # save_on_top = True
 
     @admin.display(description='Количество в избранных')
     def count_favorites(self, obj):
         """Получаем количество избранных."""
+
         return obj.favorites.count()
 
     @admin.display(description='Ингредиенты')
     def get_ingredients(self, obj):
         """Получаем ингредиенты."""
+
         return '\n '.join([
             f'{item["ingredient__name"]} - {item["amount"]}'
             f' {item["ingredient__measurement_unit"]}.'
             for item in obj.ingredient_list.values(
                 'ingredient__name',
-                'amount', 'ingredient__measurement_unit')])
+                'amount',
+                'ingredient__measurement_unit'
+            )
+        ])
 
     @admin.display(description='Тэги')
     def get_tags(self, obj):
         """Получаем теги."""
+
         return ', '.join(_.name for _ in obj.tags.all())
 
 

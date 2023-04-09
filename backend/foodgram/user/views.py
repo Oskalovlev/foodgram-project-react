@@ -11,9 +11,8 @@ from user.serializers import CustomUserSerializer
 
 
 class CustomUserViewset(DjoserUserViewSet):
-    """
-    DjoserViewSet стандартный.
-    """
+    """DjoserViewSet с управлением подпиской."""
+
     queryset = CustomUser.objects.all().order_by('id')
     serializer_class = CustomUserSerializer
     pagination_class = LimitPageNumberPagination
@@ -24,9 +23,8 @@ class CustomUserViewset(DjoserUserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def subscribe(self, request, **kwargs):
-        """Подписываем / отписываемся на пользователя.
-        Доступно только авторизованным пользователям.
-        """
+        """Управление подпиской."""
+
         user = request.user
         author_id = self.kwargs.get('id')
         author = get_object_or_404(CustomUser, id=author_id)
@@ -49,9 +47,8 @@ class CustomUserViewset(DjoserUserViewSet):
         permission_classes=(IsAuthenticated,)
     )
     def subscriptions(self, request):
-        """Возвращает пользователей, на которых подписан текущий пользователь.
-        В выдачу добавляются рецепты.
-        """
+        """Возвращает авторов на которых подисан пользователь."""
+
         return self.get_paginated_response(
             SubscriptionSerializer(
                 self.paginate_queryset(
