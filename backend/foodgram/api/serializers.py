@@ -1,15 +1,12 @@
-
 from django.conf import settings
 from django.db import models, transaction
+from drf_extra_fields.fields import Base64ImageField
+from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
+                           ShoppingCart, Tag)
 from rest_framework import (exceptions, fields, relations, serializers, status,
                             validators)
-# from rest_framework.exceptions import ValidationError
-
-from recipe.models import (Ingredient, IngredientInRecipe, Recipe,
-                           Tag, Favorite, ShoppingCart)
-from user.models import Subscription, CustomUser
+from user.models import CustomUser, Subscription
 from user.serializers import CustomUserSerializer
-from .manage.support_files import Base64ImageField
 
 
 class ShowRecipeAddedSerializer(serializers.ModelSerializer):
@@ -72,7 +69,7 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
 class RecipeReadListSerializer(serializers.ModelSerializer):
     """Серилизатор списка модели Recipes."""
 
-    author = CustomUserSerializer()
+    author = CustomUserSerializer(read_only=True)
     image = Base64ImageField()
     ingredients = IngredientInRecipeSerializer(many=True,
                                                required=True,
@@ -132,7 +129,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('id', 'image', 'tags', 'author', 'ingredients',
+        fields = ('image', 'tags', 'author', 'ingredients',
                   'name', 'text', 'cooking_time')
         read_only_fields = ('author',)
 
