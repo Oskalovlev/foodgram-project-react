@@ -1,10 +1,11 @@
 from django.db.models import F
 from django.db.transaction import atomic
 from drf_extra_fields.fields import Base64ImageField
-from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
-                           ShoppingCart, Tag)
 from rest_framework import (exceptions, fields, relations, serializers, status,
                             validators)
+
+from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
+                           ShoppingCart, Tag)
 from user.models import CustomUser, Subscription
 from user.serializers import CustomUserSerializer
 

@@ -49,13 +49,13 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
                     )
                 )
             name = name.lower()
-            start_queryset = list(queryset.filter(name__istartswith=name))
-            ingridients_set = set(start_queryset)
+            queryset = list(queryset.filter(name__istartswith=name))
+            ingridients_set = set(queryset)
             cont_queryset = queryset.filter(name__icontains=name)
-            start_queryset.extend(
+            queryset.extend(
                 [ing for ing in cont_queryset if ing not in ingridients_set]
             )
-        return start_queryset
+        return queryset
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -73,33 +73,37 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return RecipeReadListSerializer
 
     @action(
-        detail=True,
         methods=('post', 'delete',),
+        detail=True,
         permission_classes=(IsAuthenticated,)
     )
     def favorite(self, request, pk):
+        """Добавление/удаление рецепта в <избранное>."""
+
         return add_and_del(
             FavoriteSerializer, Favorite, request, pk
         )
 
     @action(
-        detail=True,
         methods=('post', 'delete',),
+        detail=True,
         permission_classes=(IsAuthenticated,)
     )
     def shopping_cart(self, request, pk):
         """Добавление/удаление рецепта в <список покупок>."""
+
         return add_and_del(
             ShoppingCartSerializer, ShoppingCart, request, pk
         )
 
     @action(
-        detail=False,
         methods=('get',),
+        detail=False,
         permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
         """Выгрузка <спика покупок>."""
+
         ingredients = IngredientInRecipe.objects.filter(
             recipe__shopping_carts__user=self.request.user
         ).values(
