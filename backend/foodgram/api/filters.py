@@ -1,34 +1,16 @@
-# from itertools import chain
+from urllib.parse import unquote
 
-# from rest_framework import filters
 from django_filters.rest_framework import FilterSet, filters
 
-from user.models import CustomUser
-from recipe.models import Recipe
-
-
-# class IngredientFilter(filters.BaseFilterBackend):
-#     """Фильтр ингредиентов по наименованию."""
-
-#     def filter_queryset(self, request, queryset, view):
-#         name_query_params = 'name'
-#         value = request.query_params.get(name_query_params, None)
-#         if value:
-#             queryset_istartswith = queryset.filter(
-#                 name__istartswith=value
-#             )
-#             queryset_contains = queryset.filter(
-#                 name__contains=value
-#             ).difference(queryset_istartswith).order_by(name_query_params)
-#             return list(chain(queryset_istartswith, queryset_contains))
-#         return queryset
+from user.models import User
+from recipe.models import Recipe, Ingredient
 
 
 class RecipeFilter(FilterSet):
     """Фильтр для рецептов."""
 
     tags = filters.AllValuesMultipleFilter(field_name='tags__slug')
-    author = filters.ModelChoiceFilter(queryset=CustomUser.objects.all())
+    author = filters.ModelChoiceFilter(queryset=User.objects.all())
     is_favorited = filters.BooleanFilter(method='filter_is_favorited')
     is_in_shopping_cart = filters.BooleanFilter(
         method='filter_is_in_shopping_cart')
@@ -46,3 +28,31 @@ class RecipeFilter(FilterSet):
     class Meta:
         model = Recipe
         fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
+
+
+class IngredientFilter(FilterSet):
+    """Фильтр для ингредиентов."""
+
+    def filter_queryset(self, request):
+
+        name = self.request.query_params.get('name')
+        queryset = Ingredient.objects.all()
+        if name:
+            if name[0] == '%':
+                name = unquote(name)
+            else:
+                name = name.translate(
+                    str.maketrans(
+                        'qwertyuiop[]asdfghjkl;\'zxcvbnm,./',
+                        'йцукенгшщзхъфывапролджэячсмитьбю.'
+                    )
+                )
+            name = name.lower()
+            filtrated_queryset = list(queryset.filter(name__istartswith=name))
+            ingridients_set = set(filtrated_queryset)
+            cont_queryset = queryset.filter(name__icontains=name)
+            filtrated_queryset.extend(
+                [ing for ing in cont_queryset if ing not in ingridients_set]
+            )
+            return filtrated_queryset
+        return queryset

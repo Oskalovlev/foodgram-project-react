@@ -6,8 +6,7 @@ from rest_framework import (exceptions, fields, relations, serializers, status,
 
 from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                            ShoppingCart, Tag)
-from user.models import CustomUser, Subscription
-from user.serializers import CustomUserSerializer
+from user.models import User, Subscription
 
 
 class ShowRecipeAddedSerializer(serializers.ModelSerializer):
@@ -22,13 +21,6 @@ class ShowRecipeAddedSerializer(serializers.ModelSerializer):
 
 class TagSerializer(serializers.ModelSerializer):
     """Серилизатор модели Tag."""
-
-    slug = serializers.SlugField(
-        max_length=200,
-        validators=[
-            validators.UniqueValidator(queryset=Tag.objects.all())
-        ]
-    )
 
     class Meta:
         model = Tag
@@ -66,10 +58,28 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserSerializer(serializers.ModelSerializer):
+    """Сериализатор пользователя и подписки."""
+
+    is_subscribed = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'username',
+                  'first_name', 'last_name', 'is_subscribed',)
+
+    def get_is_subscribed(self, author):
+        """Проверка подписки пользователей."""
+
+        request = self.context.get('request')
+        return (request and request.user.is_authenticated
+                and request.user.subscriber.filter(author=author).exists())
+
+
 class RecipeReadListSerializer(serializers.ModelSerializer):
     """Серилизатор <списка> модели Recipes."""
 
-    author = CustomUserSerializer(read_only=True)
+    author = UserSerializer(read_only=True)
     image = Base64ImageField()
     ingredients = IngredientInRecipeSerializer(
         many=True,
@@ -133,7 +143,7 @@ class IngredientInRecipeWriteSerializer(serializers.ModelSerializer):
 class RecipeCreateSerializer(serializers.ModelSerializer):
     """Сериализатор создания рецептов."""
 
-    author = CustomUserSerializer(read_only=True)
+    author = UserSerializer(read_only=True)
     ingredients = IngredientInRecipeWriteSerializer(many=True)
     image = Base64ImageField(max_length=None, use_url=True)
     tags = relations.PrimaryKeyRelatedField(
@@ -200,33 +210,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                 )
         return value
 
-    def validate_cooking_time(self, data):
-        """Проверяем время приготовления рецепта."""
-
-        cooking_time = self.initial_data.get('cooking_time')
-        if int(cooking_time) <= 0:
-            raise serializers.ValidationError(
-                {'cooking_time': 'не может быть меньше минуты'}
-            )
-        return data
-
-    def validate_tags(self, value):
-        """Проверяем на наличие уникального тега."""
-
-        tags = value
-        if not tags:
-            raise exceptions.ValidationError(
-                {'tags': 'нужен тэг'}
-            )
-        tags_list = []
-        for tag in tags:
-            if tag in tags_list:
-                raise exceptions.ValidationError(
-                    {'tags': 'нужен уникальный тэг'}
-                )
-            tags_list.append(tag)
-        return value
-
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
@@ -241,10 +224,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     recipes = serializers.SerializerMethodField(read_only=True)
     recipes_count = serializers.SerializerMethodField(read_only=True)
 
-    class Meta(CustomUserSerializer.Meta):
-        model = CustomUser
+    class Meta(UserSerializer.Meta):
+        model = User
         fields = ('id', 'email', 'username',
-                  'first_name', 'last_name', 'is_subscribed',
+                  'first_name', 'last_name',
                   'recipes', 'recipes_count',)
         read_only_fields = ('email', 'username', 'last_name', 'first_name',)
 
@@ -276,8 +259,11 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
         recipes = obj.recipes.all()
-        if limit:
-            recipes = recipes[:int(limit)]
+        if limit == int:
+            try:
+                recipes = recipes[:int(limit)]
+            except ValueError:
+                raise ('\nОжидеется тип даннх integer')
         serializer = ShowRecipeAddedSerializer(
             recipes,
             many=True,
