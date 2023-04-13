@@ -15,7 +15,6 @@ from .serializers import (ShoppingCartSerializer, IngredientSerializer,
                           TagSerializer, FavoriteSerializer,
                           SubscriptionSerializer, UserSerializer)
 from .manage.functionality import add_and_del, out_list_ingredients
-# from .manage import support_files
 from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                            ShoppingCart, Tag)
 from user.models import User, Subscription
