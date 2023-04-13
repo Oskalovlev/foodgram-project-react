@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-# from pathlib import Path
-# from datetime import timedelta
+
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
@@ -172,10 +171,18 @@ DJOSER = {
         # 'user_list': ['rest_framework.permissions.AllowAny']
     },
     'SERIALIZERS': {
-        'user': 'user.serializers.CustomUserSerializer',
-        'current_user': 'user.serializers.CustomUserSerializer',
+        'user': 'api.serializers.UserSerializer',
+        'current_user': 'api.serializers.UserSerializer',
         'user_create': 'djoser.serializers.UserCreateSerializer',
     },
 }
 
-AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = 'user.User'
+
+
+# Константы моделей
+
+DATA_LENGTH_USER = 150
+DATA_LENGTH_RECIPE = 200
+DATA_LENGTH_MAIL = 254
+COLOR_LENGTH = 7

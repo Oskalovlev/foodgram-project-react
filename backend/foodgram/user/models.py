@@ -1,50 +1,52 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator, EmailValidator
+from django.core.validators import RegexValidator
 from django.db import models
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     """Модель пользователя."""
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ('username', 'first_name', 'last_name', )
 
     username = models.CharField(
         'Пользователь',
-        max_length=150,
+        max_length=settings.DATA_LENGTH_USER,
         unique=True,
         blank=False,
-        validators=[
-            RegexValidator(
-                regex=r'^[\w.@+-]+\Z',
-                ),
-        ]
+        validators=[RegexValidator(
+            regex=r'^[\w$%^&#:;!]+\Z',
+        )]
     )
     first_name = models.CharField(
         'Имя',
-        max_length=150,
-        blank=False
+        max_length=settings.DATA_LENGTH_USER,
+        blank=False,
+        validators=[RegexValidator(
+            regex=r'^[\w$%^&#:;!]+\Z',
+        )]
     )
     last_name = models.CharField(
         'Фамилия',
-        max_length=150,
-        blank=False
+        max_length=settings.DATA_LENGTH_USER,
+        blank=False,
+        validators=[RegexValidator(
+            regex=r'^[\w$%^&#:;!]+\Z',
+        )]
     )
     email = models.EmailField(
         'Адрес электронной почты',
-        max_length=254,
+        max_length=settings.DATA_LENGTH_MAIL,
         unique=True,
         blank=False,
-        validators=(EmailValidator,)
     )
     password = models.CharField(
         'Пароль',
-        max_length=150,
+        max_length=settings.DATA_LENGTH_USER,
         blank=False,
         null=False
     )
-    is_subscribed = models.BooleanField(
-        default=False,
-    )
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username', 'first_name', 'last_name', )
 
     class Meta(AbstractUser.Meta):
         ordering = ['username']
@@ -59,15 +61,15 @@ class Subscription(models.Model):
     """Модель подписки."""
 
     user = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
         related_name='subscriber',
         verbose_name='Подписчик',
     )
     author = models.ForeignKey(
-        CustomUser,
+        User,
         on_delete=models.CASCADE,
-        related_name='author',
+        related_name='subscription_author',
         verbose_name='Автор',
     )
 
