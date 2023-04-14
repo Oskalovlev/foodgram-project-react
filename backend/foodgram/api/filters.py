@@ -1,9 +1,10 @@
 from urllib.parse import unquote
-
+from itertools import chain
+from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import FilterSet, filters
 
 from user.models import User
-from recipe.models import Recipe, Ingredient
+from recipe.models import Recipe
 
 
 class RecipeFilter(FilterSet):
@@ -30,29 +31,29 @@ class RecipeFilter(FilterSet):
         fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
 
 
-class IngredientFilter(FilterSet):
+class IngredientFilter(SearchFilter):
     """Фильтр для ингредиентов."""
 
-    def filter_queryset(self, request):
+    def filter_queryset(self, request, queryset, view):
 
-        name = self.request.query_params.get('name')
-        queryset = Ingredient.objects.all()
-        if name:
-            if name[0] == '%':
-                name = unquote(name)
+        name_query_params = 'name'
+        value = request.query_params.get(name_query_params, None)
+        if value:
+            if value[0] == '%':
+                value = unquote(value)
             else:
-                name = name.translate(
+                value = value.translate(
                     str.maketrans(
                         'qwertyuiop[]asdfghjkl;\'zxcvbnm,./',
                         'йцукенгшщзхъфывапролджэячсмитьбю.'
                     )
                 )
-            name = name.lower()
-            filtrated_queryset = list(queryset.filter(name__istartswith=name))
-            ingridients_set = set(filtrated_queryset)
-            cont_queryset = queryset.filter(name__icontains=name)
-            filtrated_queryset.extend(
-                [ing for ing in cont_queryset if ing not in ingridients_set]
+            value = value.lower()
+            queryset_istartswith = queryset.filter(
+                name__istartswith=value
             )
-            return filtrated_queryset
+            queryset_contains = queryset.filter(
+                name__contains=value
+            ).difference(queryset_istartswith).order_by(name_query_params)
+            return list(chain(queryset_istartswith, queryset_contains))
         return queryset

@@ -16,7 +16,8 @@ class User(AbstractUser):
         unique=True,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[\w$%^&#:;!]+\Z',
+            regex=settings.CHARACTER_VALIDATOR,
+            inverse_match=True,
         )]
     )
     first_name = models.CharField(
@@ -24,7 +25,8 @@ class User(AbstractUser):
         max_length=settings.DATA_LENGTH_USER,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[\w$%^&#:;!]+\Z',
+            regex=settings.CHARACTER_VALIDATOR,
+            inverse_match=True,
         )]
     )
     last_name = models.CharField(
@@ -32,7 +34,8 @@ class User(AbstractUser):
         max_length=settings.DATA_LENGTH_USER,
         blank=False,
         validators=[RegexValidator(
-            regex=r'^[\w$%^&#:;!]+\Z',
+            regex=settings.CHARACTER_VALIDATOR,
+            inverse_match=True,
         )]
     )
     email = models.EmailField(

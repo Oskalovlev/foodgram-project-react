@@ -1,5 +1,3 @@
-# from urllib.parse import unquote
-
 from djoser.views import UserViewSet as DjoserUserViewSet
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
@@ -90,7 +88,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (AllowAny,)
-    filterset_class = IngredientFilter
+    filter_backends = (IngredientFilter,)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
