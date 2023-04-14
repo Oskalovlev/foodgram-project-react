@@ -12,6 +12,10 @@ class NameModel(models.Model):
         'Название',
         max_length=settings.DATA_LENGTH_RECIPE,
         unique=True,
+        validators=[RegexValidator(
+            regex=settings.CHARACTER_VALIDATOR,
+            inverse_match=True,
+        )]
         )
 
     class Meta:
@@ -29,7 +33,7 @@ class Tag(NameModel):
         max_length=settings.COLOR_LENGTH,
         unique=True,
         validators=[
-            RegexValidator(regex=r'^#(?:[0-9a-fA-F]{3}){1,2}$')
+            RegexValidator(regex=r'^#([0-9a-fA-F]{3,6})$')
         ],
         default="#ffffff",
     )
@@ -156,7 +160,7 @@ class Favorite(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='favorites',
+        related_name='+',
         verbose_name='Рецепт',
         )
 
@@ -186,7 +190,7 @@ class ShoppingCart(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='shopping_carts',
+        related_name='+',
         verbose_name='Рецепт',
         )
 
