@@ -1,21 +1,21 @@
-from djoser.views import UserViewSet as DjoserUserViewSet
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, response, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from djoser.views import UserViewSet as DjoserUserViewSet
+from rest_framework import response, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from .filters import RecipeFilter, IngredientFilter
+from .manage.functionality import add_and_del, out_list_ingredients
+from .filters import IngredientFilter, RecipeFilter
 from .pagination import LimitPageNumberPagination
 from .permissions import IsAuthor
-from .serializers import (ShoppingCartSerializer, IngredientSerializer,
+from .serializers import (FavoriteSerializer, IngredientSerializer,
                           RecipeCreateSerializer, RecipeReadListSerializer,
-                          TagSerializer, FavoriteSerializer,
-                          SubscriptionSerializer, UserSerializer)
-from .manage.functionality import add_and_del, out_list_ingredients
+                          ShoppingCartSerializer, SubscriptionSerializer,
+                          TagSerializer, UserSerializer)
 from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                            ShoppingCart, Tag)
-from user.models import User, Subscription
+from user.models import Subscription, User
 
 
 class UserViewset(DjoserUserViewSet):
@@ -138,7 +138,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Выгрузка <спика покупок>."""
 
         ingredients = IngredientInRecipe.objects.filter(
-            recipe__shopping_carts__user=self.request.user
+            recipe__shopping_cart__user=self.request.user
         ).values(
             'ingredient__name',
             'ingredient__measurement_unit'
