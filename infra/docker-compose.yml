@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 services:
 
@@ -28,10 +28,11 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+    # restart: always
     volumes:
       - ../frontend/:/app/result_build/
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
 
   nginx:
     image: nginx:1.19.3
@@ -43,8 +44,8 @@ services:
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/static/
       - media_value:/var/html/media/
-    depends_on:
-      - frontend
+    # depends_on:
+    #   - frontend
 
 volumes:
   postgres_data:

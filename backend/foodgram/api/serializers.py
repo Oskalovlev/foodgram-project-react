@@ -6,7 +6,7 @@ from rest_framework import (exceptions, fields, relations, serializers, status,
 
 from recipe.models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                            ShoppingCart, Tag)
-from user.models import User, Subscription
+from user.models import Subscription, User
 
 
 class ShowRecipeAddedSerializer(serializers.ModelSerializer):
@@ -122,7 +122,7 @@ class RecipeReadListSerializer(serializers.ModelSerializer):
 
         request = self.context.get('request')
         return (request and request.user.is_authenticated
-                and request.user.shopping_carts.filter(recipe=obj).exists())
+                and request.user.shopping_cart.filter(recipe=obj).exists())
 
 
 class IngredientInRecipeWriteSerializer(serializers.ModelSerializer):

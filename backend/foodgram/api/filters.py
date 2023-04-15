@@ -1,10 +1,11 @@
-from urllib.parse import unquote
 from itertools import chain
-from rest_framework.filters import SearchFilter
-from django_filters.rest_framework import FilterSet, filters
+from urllib.parse import unquote
 
-from user.models import User
+from django_filters.rest_framework import FilterSet, filters
+from rest_framework.filters import SearchFilter
+
 from recipe.models import Recipe
+from user.models import User
 
 
 class RecipeFilter(FilterSet):
@@ -23,7 +24,7 @@ class RecipeFilter(FilterSet):
 
     def filter_is_in_shopping_cart(self, queryset, name, value):
         if value and not self.request.user.is_anonymous:
-            return queryset.filter(shopping_carts__user=self.request.user)
+            return queryset.filter(shopping_cart__user=self.request.user)
         return queryset
 
     class Meta:
@@ -34,7 +35,7 @@ class RecipeFilter(FilterSet):
 class IngredientFilter(SearchFilter):
     """Фильтр для ингредиентов."""
 
-    def filter_queryset(self, request, queryset, view):
+    def get_queryset(self, request, queryset, view):
 
         name_query_params = 'name'
         value = request.query_params.get(name_query_params, None)
