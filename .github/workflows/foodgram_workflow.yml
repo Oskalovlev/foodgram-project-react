@@ -39,7 +39,7 @@ jobs:
         echo 'per-file-ignores =' >> setup.cfg
         echo '    */settings.py:E501' >> setup.cfg
         echo 'max-complexity = 10' >> setup.cfg
-        python -m flake8
+        python -m flake8 backend
 
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
