@@ -12,20 +12,22 @@ services:
       - ./.env
 
   backend:
-    image: oskalov/backend:latest
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
     restart: always
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
       - db
-    links:
-      - db:db
     env_file:
       - ./.env
 
   frontend:
-    image: oskalov/frontend:latest
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
