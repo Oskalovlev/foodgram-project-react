@@ -23,22 +23,6 @@ jobs:
 
     - name: Test with flake8
       run: |
-        echo '[flake8]' > setup.cfg
-        echo 'ignore =' >> setup.cfg
-        echo '    W503' >> setup.cfg
-        echo '    I001' >> setup.cfg
-        echo '    I004' >> setup.cfg
-        echo '    I005' >> setup.cfg
-        echo '    R504' >> setup.cfg
-        echo '    R505' >> setup.cfg
-        echo 'exclude =' >> setup.cfg
-        echo '    tests/,' >> setup.cfg
-        echo '    */migrations/,' >> setup.cfg
-        echo '    venv/,' >> setup.cfg
-        echo '    env/' >> setup.cfg
-        echo 'per-file-ignores =' >> setup.cfg
-        echo '    */settings.py:E501' >> setup.cfg
-        echo 'max-complexity = 10' >> setup.cfg
         python -m flake8
 
   build_and_push_to_docker_hub:
