@@ -101,7 +101,6 @@ jobs:
             sudo docker compose stop
             sudo docker compose down
             sudo docker system prune -f
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
             sudo docker compose up -d --build
             sudo docker-compose exec -T backend python manage.py makemigrations
             sudo docker-compose exec -T backend python manage.py migrate
