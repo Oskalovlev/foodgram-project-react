@@ -1,115 +1,100 @@
-# Project «Foodgram» in Docker
-[![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/yamdb_workflow.yml)
-## Описание
-#### Этот REST API построен на основе [Django REST Framework](https://www.django-rest-framework.org/)(известного как DRF). 
-#### Вам понадобятся хотя бы фундаментальные знания о DRF, чтобы заняться разработкой этого проекта.
-#### Представляет собой расширение возможностей проекта «API for Yamdb» для совершения удаленных операций.   
+name: API for Foodgram
 
-## Технологии
-    ```sh
-    - Python 3.10
-    - Django 4.2
-    - Django rest framework 3.14.0
-    - Djoser 2.1.0
-    - Django-filter 23.1
-    - Gunicorn 20.1.0
-    - PostgreSQL 15
-    - Docker 20.10.2
-    - drf-extra-fields 3.4.1
-    ```
-  PS подробнее в requrements.txt
+on: [push]
 
-## Установка
-### Шаблон описания файла .env
-    ```sh
-    - DB_ENGINE=django.db.backends.postgresql
-    - DB_NAME=postgres
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
-    - DB_HOST=db
-    - DB_PORT=5432
-    - SECRET_KEY=<секретный ключ проекта django>
-    ```
-### Инструкции для развертывания и запуска приложения
-для Linux-систем все команды необходимо выполнять от имени администратора
-  - Склонировать репозиторий
-    ```sh
-    git clone https://github.com/Oskalovlev/foodgram-project-react.git
-    ```
-  - Выполнить вход на удаленный сервер
-  - Установить docker на сервер:
-    ```sh
-    apt install docker.io 
-    ```
-  - Установить docker-compose на сервер:
-    ```sh
-    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
-    ```
-  - Локально отредактировать файл infra/nginx.conf, обязательно в строке server_name вписать IP-адрес сервера
-  - Скопировать файлы docker-compose.yml и nginx.conf из директории infra на сервер:
-    ```sh
-    scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
-    scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
-    ```
-  - Создать .env файл по предлагаемому выше шаблону. Обязательно изменить значения POSTGRES_USER и POSTGRES_PASSWORD
-  - Для работы с Workflow добавить в Secrets GitHub переменные окружения для работы:
-    ```sh
-    DB_ENGINE=<django.db.backends.postgresql>
-    DB_NAME=<имя базы данных postgres>
-    DB_USER=<пользователь бд>
-    DB_PASSWORD=<пароль>
-    DB_HOST=<db>
-    DB_PORT=<5432>
-    
-    DOCKER_PASSWORD=<пароль от DockerHub>
-    DOCKER_USERNAME=<имя пользователя>
-    
-    SECRET_KEY=<секретный ключ проекта django>
+jobs:
 
-    USER=<username для подключения к серверу>
-    HOST=<IP сервера>
-    PASSPHRASE=<пароль для сервера, если он установлен>
-    SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
+  tests:
+    runs-on: ubuntu-latest
 
-    TELEGRAM_TO=<ID чата, в который придет сообщение>
-    TELEGRAM_TOKEN=<токен вашего бота>
-    ```
-Workflow состоит из четырёх шагов:
-  - Проверка кода на соответствие PEP8
-  - Сборка и публикация образа бекенда на DockerHub.
-  - Автоматический деплой на удаленный сервер.
-  - Отправка уведомления в телеграм-чат.
-  - собрать и запустить контейнеры на сервере:
-    ```bash
-    docker-compose up -d --build
-    ```
-  - После успешной сборки выполнить следующие действия (только при первом деплое):
-    * провести миграции внутри контейнеров:
-    ```bash
-    docker-compose exec web python manage.py migrate
-    ```
-    * собрать статику проекта:
-    ```bash
-    docker-compose exec web python manage.py collectstatic --no-input
-    ```  
-    * Создать суперпользователя Django, после запроса от терминала ввести логин и пароль для суперпользователя:
-    ```bash
-    docker-compose exec web python manage.py createsuperuser
-    ```
+    steps:
+    - uses: actions/checkout@v2
 
-### Команды для заполнения базы данными
-  - Заполнить базу данными
-  - Создать резервную копию данных:
-    ```bash
-    docker-compose exec web python manage.py dumpdata > fixtures.json
-    ```
-  - Остановить и удалить неиспользуемые элементы инфраструктуры Docker:
-    ```bash
-    docker-compose down -v --remove-orphans
-    ```
-## Примеры API-запросов
-  *Подробные примеры запросов приведены в документации ReDoc *
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
 
-## Автор: 
-  - Лев Бессонов
+    - name: Install dependencies
+      run: | 
+        python -m pip install --upgrade pip 
+        pip install flake8 pep8-naming flake8-broken-line flake8-return flake8-isort
+        pip install -r backend/requirements.txt 
+
+    - name: Test with pytest
+      run: pytest    
+
+    - name: Test with flake8
+      run: |
+        python -m flake8
+
+  build_and_push_to_docker_hub:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: tests
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3 
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+ 
+      - name: Login to Docker 
+        uses: docker/login-action@v2 
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v3
+        with:
+          context: backend/
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram:v1.00.0000
+
+  deploy:
+    name: Deploy to remote server
+    runs-on: ubuntu-latest
+    needs: build_and_push_to_docker_hub
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: executing remote ssh commands to deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd ${{ secrets.PROJECT_FOLDER }}
+            touch .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            sudo docker compose stop
+            sudo docker compose rm web
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
+            sudo docker compose up -d --build
+            sudo docker system prune -f
+            sudo docker compose exec backend python manage.py migrate
+            sudo docker compose exec backend python manage.py collectstatic --no-input
+
+  send_message:
+    name: Message to telegram
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - name: send message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: | 
+          ${{ github.workflow }} успешно выполнен!
+          https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          ${{ github.actor }} - запушил!
+          Статус ${{ github.action_status }}

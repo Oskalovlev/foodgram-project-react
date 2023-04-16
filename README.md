@@ -56,8 +56,8 @@
   - Для работы с Workflow добавить в Secrets GitHub переменные окружения для работы:
     ```sh
     DB_ENGINE=<django.db.backends.postgresql>
-    DB_NAME=<имя базы данных postgres>
-    DB_USER=<пользователь бд>
+    DB_NAME=<имя БД postgres>
+    DB_USER=<пользователь БД>
     DB_PASSWORD=<пароль>
     DB_HOST=<db>
     DB_PORT=<5432>

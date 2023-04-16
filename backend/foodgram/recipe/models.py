@@ -14,9 +14,8 @@ class NameModel(models.Model):
         unique=True,
         validators=[RegexValidator(
             regex=settings.CHARACTER_VALIDATOR,
-            inverse_match=True,
-        )]
-        )
+            inverse_match=True,)]
+    )
 
     class Meta:
         abstract = True
@@ -121,13 +120,13 @@ class IngredientInRecipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
         related_name='ingredients',
-        )
+    )
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
         related_name='+'
-        )
+    )
     amount = models.PositiveSmallIntegerField(
         'Кол-во',
         validators=[MinValueValidator(1)]
@@ -156,13 +155,13 @@ class Favorite(models.Model):
         on_delete=models.CASCADE,
         related_name='favorites',
         verbose_name='Пользователь',
-        )
+    )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='favorites',
         verbose_name='Рецепт',
-        )
+    )
 
     class Meta:
         verbose_name = 'Избранный'
@@ -186,13 +185,13 @@ class ShoppingCart(models.Model):
         on_delete=models.CASCADE,
         related_name='shopping_cart',
         verbose_name='Пользователь',
-        )
+    )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='shopping_cart',
         verbose_name='Рецепт',
-        )
+    )
 
     class Meta:
         verbose_name = 'Список покупок'

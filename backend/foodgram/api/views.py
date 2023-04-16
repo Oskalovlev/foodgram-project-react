@@ -64,10 +64,8 @@ class UserViewset(DjoserUserViewSet):
         """Возвращает авторов на которых подисан пользователь."""
 
         return self.get_paginated_response(
-            SubscriptionSerializer(
-                self.paginate_queryset(
-                   User.objects.filter(subscription_author__user=request.user)
-                ),
+            SubscriptionSerializer(self.paginate_queryset(
+                User.objects.filter(subscription_author__user=request.user)),
                 many=True,
                 context={'request': request},
             ).data
