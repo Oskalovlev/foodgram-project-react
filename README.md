@@ -1,5 +1,5 @@
 # Project «Foodgram» in Docker
-[![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/yamdb_workflow.yml)
+[![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
 ## Описание
 #### Этот REST API построен на основе [Django REST Framework](https://www.django-rest-framework.org/)(известного как DRF). 
 #### Вам понадобятся хотя бы фундаментальные знания о DRF, чтобы заняться разработкой этого проекта.
@@ -28,7 +28,6 @@
     - POSTGRES_PASSWORD=postgres
     - DB_HOST=db
     - DB_PORT=5432
-    - SECRET_KEY=<секретный ключ проекта django>
     ```
 ### Инструкции для развертывания и запуска приложения
 для Linux-систем все команды необходимо выполнять от имени администратора
