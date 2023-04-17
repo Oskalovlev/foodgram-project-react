@@ -89,9 +89,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo docker-compose stop
-            sudo docker-compose down
             cd ${{ secrets.PROJECT_FOLDER }}
+            rm -f .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -99,8 +98,12 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            sudo docker-compose rm web
-            sudo docker-compose up -d --build
+            sudo docker-compose stop
+            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
+            sudo docker rmi ${{ secrets.DOCKER_USER }}/foodgram_front
+            sudo docker rmi ${{ secrets.DOCKER_USER }}/foodgram_back
+            sudo docker-compose up -d
+            sudo docker image prune -a
 
   send_message:
     name: Message to telegram
