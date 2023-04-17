@@ -35,11 +35,10 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '158.160.0.11',
     'localhost',
-    'backend',
     '127.0.0.1',
-    '[::1]'
 ]
 
+# ALLOWED_HOSTS = ['*']
 
 # Application definition
 

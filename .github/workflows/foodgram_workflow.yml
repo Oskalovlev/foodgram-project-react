@@ -88,7 +88,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
+            sudo docker-compose stop
+            sudo docker-compose down
             cd ${{ secrets.PROJECT_FOLDER }}
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
             cd infra/
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -97,8 +100,6 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
-            sudo docker-compose stop
-            sudo docker-compose down
             sudo docker-compose up -d --build
 
   send_message:
