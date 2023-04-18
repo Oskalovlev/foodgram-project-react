@@ -1,9 +1,10 @@
 # Project «Foodgram» in Docker
+
 [![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
 ## Описание
-#### Этот REST API построен на основе [Django REST Framework](https://www.django-rest-framework.org/)(известного как DRF). 
-#### Вам понадобятся хотя бы фундаментальные знания о DRF, чтобы заняться разработкой этого проекта.
-#### Представляет собой расширение возможностей проекта «API for Yamdb» для совершения удаленных операций.   
+#### Продуктовый помощник. Может хранить рецепты, которомы можно делиться с другими пользователями. 
+#### Можно добавить в сприсок избранного лучшие рецепты. Выбрать рецепты и добавить в список покупок.
+#### Список покупок форимрует список из продуктов выбранных рецептов. Сохраняет список в 'shop_list.txt'   
 
 ## Технологии
     ```sh
