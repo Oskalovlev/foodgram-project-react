@@ -35,7 +35,7 @@ class RecipeFilter(FilterSet):
 class IngredientFilter(SearchFilter):
     """Фильтр для ингредиентов."""
 
-    def get_queryset(self, request, queryset, view):
+    def filter_queryset(self, request, queryset, view):
 
         name_query_params = 'name'
         value = request.query_params.get(name_query_params, None)

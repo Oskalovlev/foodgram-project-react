@@ -16,7 +16,7 @@ class UserAdmin(admin.ModelAdmin):
     )
     search_fields = ('username', 'email')
     list_filter = ('username', 'email')
-    readonly_fields = ('count_subscribers', 'count_recipes')
+    read_only_fields = ('count_subscribers', 'count_recipes')
     empty_value_display = '--empty--'
 
     @admin.display(description='Количество подписчиков')
