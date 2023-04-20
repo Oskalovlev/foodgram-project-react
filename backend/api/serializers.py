@@ -122,41 +122,37 @@ class RecipeReadListSerializer(serializers.ModelSerializer):
             amount=F('recipes__ingredient_list')
         )
 
-    def get_is_favorited(self, obj):
-        """Проверка избранного."""
-
-        request = self.context.get('request')
-        return (request and request.user.is_authenticated
-                and request.user.favorites.filter(recipe=obj).exists())
-
-    def get_is_in_shopping_cart(self, obj):
-        """Проверка списка покупок."""
-
-        request = self.context.get('request')
-        return (request and request.user.is_authenticated
-                and request.user.shopping_cart.filter(recipe=obj).exists())
-
     # def get_is_favorited(self, obj):
-    #     """Проверка списка избранного."""
+    #     """Проверка избранного."""
 
-    #     request = self.context.get('request').user
-    #     if request.is_anonymous:
-    #         return False
-    #     return Favorite.objects.filter(
-    #         recipe=obj,
-    #         user=request
-    #     ).exists()
+    #     request = self.context.get('request')
+    #     return (request and request.user.is_authenticated
+    #             and request.user.favorites.filter(recipe=obj).exists())
 
     # def get_is_in_shopping_cart(self, obj):
     #     """Проверка списка покупок."""
 
-    #     request = self.context.get('request').user
-    #     if request.is_anonymous:
-    #         return False
-    #     return ShoppingCart.objects.filter(
-    #         recipe=obj,
-    #         user=request
-    #     ).exists()
+    #     request = self.context.get('request')
+    #     return (request and request.user.is_authenticated
+    #             and request.user.shopping_cart.filter(recipe=obj).exists())
+
+    def get_is_favorited(self, obj):
+        """Проверка списка избранного."""
+
+        request = self.context.get('request').user
+        return Favorite.objects.filter(
+            recipe=obj,
+            user=request
+        ).exists()
+
+    def get_is_in_shopping_cart(self, obj):
+        """Проверка списка покупок."""
+
+        request = self.context.get('request').user
+        return ShoppingCart.objects.filter(
+            recipe=obj,
+            user=request
+        ).exists()
 
 
 class IngredientInRecipeWriteSerializer(serializers.ModelSerializer):

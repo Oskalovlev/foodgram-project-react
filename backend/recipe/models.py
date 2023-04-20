@@ -125,13 +125,13 @@ class IngredientInRecipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
         related_name='ingredient_list',
-        )
+    )
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
         verbose_name='Ингредиент',
-        related_name='ingredient_list',
-        )
+        related_name='+',
+    )
     amount = models.PositiveSmallIntegerField(
         'Кол-во',
         validators=[MinValueValidator(1)]
@@ -159,12 +159,13 @@ class UserAndRecipeModel(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
-        )
+        related_name='+',
+    )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
-        )
+    )
 
     class Meta:
         abstract = True
