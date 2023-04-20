@@ -279,10 +279,15 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         """Рецепты."""
 
         request = self.context.get('request')
-        limit = request.GET.get('recipes_limit')
+        limit = request.GET.get('recipe_limit')
         recipes = obj.recipes.all()
-        if recipes == recipes[:int(limit)]:
-            raise ValueError('\nОжидеется тип даннх integer')
+        if limit == int:
+            try:
+                recipes = recipes[:int(limit)]
+            except ValueError:
+                raise ('\nОжидеется тип даннх integer')
+        # if recipes == recipes[:int(limit)]:
+        #     raise ValueError('\nОжидеется тип даннх integer')
         serializer = ShowAddedRecipeSerializer(
             recipes,
             many=True,

@@ -119,4 +119,4 @@ jobs:
           ${{ github.workflow }} успешно выполнен!
           https://github.com/${{ github.repository }}/commit/${{github.sha}}
           ${{ github.actor }} - запушил!
-          ${{ github.action_status }} - status
+          
