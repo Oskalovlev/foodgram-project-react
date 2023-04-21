@@ -32,7 +32,7 @@ services:
       - backend
 
   nginx:
-    image: nginx:1.23.3-alpine
+    image: nginx:1.23.4-alpine
     ports:
       - "80:80"
     volumes:

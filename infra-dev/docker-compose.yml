@@ -25,24 +25,23 @@ services:
     env_file:
       - ./.env
 
-  # frontend: 
-  #   build: 
-  #     context: ../frontend 
-  #     dockerfile: Dockerfile 
-  #   volumes: 
-  #     - ../frontend/:/app/result_build/ 
+  frontend: 
+    build: 
+      context: ../frontend 
+      dockerfile: Dockerfile 
+    volumes: 
+      - ../frontend/:/app/result_build/ 
 
-
-  frontend:
-    image: oskalov/frontend:latest
-    volumes:
-      - ../frontend/:/app/result_build/
-    depends_on:
-      - backend
+  # frontend:
+  #   image: oskalov/frontend:latest
+  #   volumes:
+  #     - ../frontend/:/app/result_build/
+  #   depends_on:
+  #     - backend
 
   nginx:
     container_name: proxy
-    image: nginx:1.23.3-alpine
+    image: nginx:1.23.4-alpine
     ports: 
       - "80:80"
     volumes:
