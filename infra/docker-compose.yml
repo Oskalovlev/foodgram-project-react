@@ -4,23 +4,24 @@ services:
 
   db:
     image: postgres:15.2-alpine
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - 5432:5432
     env_file:
       - ./.env
 
   backend:
     image: oskalov/backend:latest
     restart: always
+    command: >
+      bash -c "python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn --bind 0:8000 foodgram.wsgi"
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
     depends_on:
       - db
-    links:
-      - db:db
     env_file:
       - ./.env
 
