@@ -1,5 +1,8 @@
 # Project «Foodgram» in Docker
 
+## http://158.160.0.11/ главная страница
+## 
+
 [![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
 ## Описание
 #### Продуктовый помощник. Может хранить рецепты, которомы можно делиться с другими пользователями. 
