@@ -30,16 +30,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECRET_KEY = 'django-insecure-2(hcab($wp3t^)v#5v4ut#1xtcp%yp!304z52u3e(*lda=g(f*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    '158.160.0.11',
-    'localhost',
-    '127.0.0.1',
-    '[::1]'
-]
+# ALLOWED_HOSTS = [
+#     '158.160.0.11',
+#     'localhost',
+#     '127.0.0.1',
+#     '[::1]'
+# ]
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
