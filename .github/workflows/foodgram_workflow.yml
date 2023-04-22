@@ -115,12 +115,11 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
          
             sudo docker-compose stop
-            sudo docker-compose rm backend
-            sudo docker-compose rm frontend
+            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm 
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/frontend
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/backend
-            sudo docker-compose up -d
-            sudo docker-compose exec backend python manage.py collectstatic --no-input
+            sudo docker-compose up -d 
+            sudo docker image prune -a
 
   send_message:
     name: Message to telegram
