@@ -77,14 +77,14 @@ jobs:
     - name: Push backend 
       uses: docker/build-push-action@v4.0.0
       with:
-        context: ./backend/
+        context: ./backend
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
     - name: Push frontend
       uses: docker/build-push-action@v4.0.0
       with:
-        context: ./frontend/
+        context: ./frontend
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
@@ -104,6 +104,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd ${{ secrets.PROJECT_FOLDER }}
+            
             sudo rm -f .env
             sudo touch .env
 
@@ -116,9 +117,11 @@ jobs:
          
             sudo docker-compose stop
             sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
-            
+
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/frontend
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/backend
+            sudo docker compose pull backend
+            sudo docker compose pull frontend
             sudo docker-compose up -d 
             sudo docker image prune -a
 
