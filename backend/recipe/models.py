@@ -32,7 +32,7 @@ class Tag(NameModel):
         max_length=settings.COLOR_LENGTH,
         unique=True,
         validators=[
-            RegexValidator(regex=r'^#([0-9a-fA-F]{3,6})$')
+            RegexValidator(regex=settings.CHARACTER_VALIDATOR_COLOR)
         ],
         default="#ffffff",
     )
