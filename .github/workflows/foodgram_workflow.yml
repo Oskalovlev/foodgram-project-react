@@ -3,21 +3,21 @@ name: CI и CD проекта Foodgram
 on: [push]
 
 jobs:
-  copy_infra_to_server:
-    name: Copy-infra
-    runs-on: ubuntu-latest
+  # copy_infra_to_server:
+  #   name: Copy-infra
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+  #   steps:
+  #   - uses: actions/checkout@v2
 
-    - uses: garygrossgarten/github-action-scp@release
-      with:
-          local: infra/
-          remote: /${{ secrets.USERNAME }}/foodgram-project-react/
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+  #   - uses: garygrossgarten/github-action-scp@release
+  #     with:
+  #         local: infra/
+  #         remote: /${{ secrets.USERNAME }}/foodgram-project-react/
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USER }}
+  #         key: ${{ secrets.SSH_KEY }}
+  #         passphrase: ${{ secrets.PASSPHRASE }}
 
   tests:
     name: Flake8-Test
@@ -130,11 +130,8 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo docker-compose stop
-            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
-            sudo docker rmi ${{ secrets.DOCKER_USER }}/frontend
-            sudo docker rmi ${{ secrets.DOCKER_USER }}/backend
-            sudo docker-compose up -d
-            sudo docker image prune -a
+            sudo docker-compose up 
+            sudo docker image prune
 
   send_message:
     name: Message to telegram
