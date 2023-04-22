@@ -15,25 +15,25 @@ class User(AbstractUser):
         max_length=settings.DATA_LENGTH_USER,
         unique=True,
         blank=False,
-        validators=[RegexValidator(
-            regex=settings.CHARACTER_VALIDATOR
-        )]
+        validators=[
+            RegexValidator(regex=r'^[a-zA-Z0-9]+$')
+        ]
     )
     first_name = models.CharField(
         'Имя',
         max_length=settings.DATA_LENGTH_USER,
         blank=False,
-        validators=[RegexValidator(
-            regex=settings.CHARACTER_VALIDATOR
-        )]
+        validators=[
+            RegexValidator(regex=r'^[а-яА-ЯёЁa-zA-Z0-9]+$')
+        ]
     )
     last_name = models.CharField(
         'Фамилия',
         max_length=settings.DATA_LENGTH_USER,
         blank=False,
-        validators=[RegexValidator(
-            regex=settings.CHARACTER_VALIDATOR
-        )]
+        validators=[
+            RegexValidator(regex=settings.CHARACTER_VALIDATOR)
+        ]
     )
     email = models.EmailField(
         'Адрес электронной почты',
