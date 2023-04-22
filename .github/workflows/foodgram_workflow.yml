@@ -104,8 +104,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd ${{ secrets.PROJECT_FOLDER }}
-            sudo docker-compose stop
-            sudo docker-compose rm backend
             sudo rm -f .env
             sudo touch .env
 
@@ -119,6 +117,8 @@ jobs:
             echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
             
             cd infra/
+            sudo docker-compose stop
+            sudo docker-compose rm backend
             sudo docker-compose rm frontend
             sudo docker pull frontend
             sudo docker pull backend
