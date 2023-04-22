@@ -7,8 +7,6 @@ services:
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - 5432:5432
     env_file:
       - ./.env
 
@@ -25,22 +23,21 @@ services:
     env_file:
       - ./.env
 
-  frontend: 
-    build: 
-      context: ../frontend 
-      dockerfile: Dockerfile 
-    volumes: 
-      - ../frontend/:/app/result_build/ 
+  # frontend: 
+  #   build: 
+  #     context: ../frontend 
+  #     dockerfile: Dockerfile 
+  #   volumes: 
+  #     - ../frontend/:/app/result_build/ 
 
-  # frontend:
-  #   image: oskalov/frontend:latest
-  #   volumes:
-  #     - ../frontend/:/app/result_build/
-  #   depends_on:
-  #     - backend
+  frontend:
+    image: oskalov/frontend:latest
+    volumes:
+      - ../frontend/:/app/result_build/
+    depends_on:
+      - backend
 
   nginx:
-    container_name: proxy
     image: nginx:1.23.4-alpine
     ports: 
       - "80:80"
@@ -48,10 +45,9 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
-      - static_value:/etc/nginx/html/static/
-      - media_value:/etc/nginx/html/media/
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
     depends_on:
-      - frontend
       - backend
 
 volumes:

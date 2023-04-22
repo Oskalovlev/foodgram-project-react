@@ -32,14 +32,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = [
-#     '158.160.0.11',
-#     'localhost',
-#     '127.0.0.1',
-#     '[::1]'
-# ]
+ALLOWED_HOSTS = [
+    '158.160.0.11',
+    'localhost',
+    '127.0.0.1',
+    '[::1]'
+]
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -192,4 +192,4 @@ DATA_LENGTH_USER = 150
 DATA_LENGTH_RECIPE = 200
 DATA_LENGTH_MAIL = 254
 COLOR_LENGTH = 7
-CHARACTER_VALIDATOR = r'^[\w$%^&#:;!]+\Z'
+CHARACTER_VALIDATOR = r'^[а-яА-ЯёЁa-zA-Z0-9]+$'

@@ -13,8 +13,8 @@ class NameModel(models.Model):
         max_length=settings.DATA_LENGTH_RECIPE,
         unique=True,
         validators=[RegexValidator(
-            regex=settings.CHARACTER_VALIDATOR,
-            inverse_match=True,)]
+            regex=settings.CHARACTER_VALIDATOR
+        )]
     )
 
     class Meta:
