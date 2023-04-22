@@ -23,17 +23,12 @@ services:
     env_file:
       - ./.env
 
-  # frontend: 
-  #   build: 
-  #     context: ../frontend 
-  #     dockerfile: Dockerfile 
-  #   volumes: 
-  #     - ../frontend/:/app/result_build/ 
-
-  frontend:
-    image: oskalov/frontend:latest
-    volumes:
-      - ../frontend/:/app/result_build/
+  frontend: 
+    build: 
+      context: ../frontend 
+      dockerfile: Dockerfile 
+    volumes: 
+      - ../frontend/:/app/result_build/ 
     depends_on:
       - backend
 

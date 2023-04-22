@@ -132,3 +132,8 @@ dmypy.json
 .idea
 
 # media fields
+static/
+media/
+
+# infra-dev
+infra-dev/
