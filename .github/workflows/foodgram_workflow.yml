@@ -115,7 +115,8 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
          
             sudo docker-compose stop
-            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm 
+            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
+            
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/frontend
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/backend
             sudo docker-compose up -d 
