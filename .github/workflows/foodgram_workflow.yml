@@ -124,6 +124,7 @@ jobs:
             sudo docker compose pull frontend
             sudo docker-compose up -d 
             sudo docker image prune -a
+            sudo docker compose exec backend python manage.py collectstatic --no-input
 
   send_message:
     name: Message to telegram
