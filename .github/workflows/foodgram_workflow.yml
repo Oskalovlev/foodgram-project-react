@@ -92,8 +92,7 @@ jobs:
     name: Deploy to remote server
     runs-on: ubuntu-latest
     needs: 
-    - build_push_backend_to_DockerHub
-    - build_push_frontend_to_DockerHub
+    - build_and_push_to_docker_hub
     if: github.ref == 'refs/heads/master'
     steps:
       - name: executing remote ssh commands to deploy
