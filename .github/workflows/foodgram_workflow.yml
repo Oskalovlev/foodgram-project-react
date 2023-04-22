@@ -131,12 +131,12 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             
-            cd infra/
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
             sudo docker-compose stop
-            sudo docker-compose rm backend
-            sudo docker-compose up -d --build
+            sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
+            sudo docker rmi ${{ secrets.DOCKER_USER }}/frontend
+            sudo docker rmi ${{ secrets.DOCKER_USER }}/backend
+            sudo docker-compose up -d
+            sudo docker image prune -a
 
   send_message:
     name: Message to telegram
