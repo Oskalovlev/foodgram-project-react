@@ -104,7 +104,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd ${{ secrets.PROJECT_FOLDER }}
-             sudo docker-compose stop
+            sudo docker-compose stop
             sudo docker-compose rm backend
             sudo rm -f .env
             sudo touch .env
@@ -120,8 +120,8 @@ jobs:
             
             cd infra/
             sudo docker-compose rm frontend
-            sudo docker pull ${{ secrets.DOCKER_USER }}/frontend:latest
-            sudo docker pull ${{ secrets.DOCKER_USER }}/backend:latest
+            sudo docker pull frontend
+            sudo docker pull backend
             sudo docker-compose up -d
             sudo docker-compose exec backend python manage.py collectstatic --no-input
 
