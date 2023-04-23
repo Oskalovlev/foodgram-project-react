@@ -10,6 +10,7 @@ class NameModel(models.Model):
 
     name = models.CharField(
         'Название',
+        unique=True,
         max_length=settings.DATA_LENGTH_RECIPE,
         validators=[RegexValidator(
             regex=settings.CHARACTER_VALIDATOR
