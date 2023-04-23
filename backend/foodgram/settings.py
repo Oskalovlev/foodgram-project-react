@@ -186,12 +186,18 @@ DJOSER = {
 AUTH_USER_MODEL = 'user.User'
 
 
-# Константы моделей
+# Константы моделей ----------------------------
+# ----------------------------------------------
 
+# Длинна вводимых символов полей
 DATA_LENGTH_USER = 150
 DATA_LENGTH_RECIPE = 200
+
 DATA_LENGTH_MAIL = 254
 COLOR_LENGTH = 7
+
+# Валиддация полей
 CHARACTER_VALIDATOR = r'^[а-яА-ЯёЁa-zA-Z0-9]+$'
 CHARACTER_VALIDATOR_USER = r'^[a-zA-Z0-9]+$'
+
 CHARACTER_VALIDATOR_COLOR = r'^#([0-9a-fA-F]{3,6})$'

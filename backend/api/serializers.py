@@ -165,6 +165,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                   'name', 'text', 'cooking_time')
         read_only_fields = ('author', 'is_favorited', 'is_in_shopping_cart')
 
+    @atomic
     def creating_ingredients(self, recipe, ingredients_data):
         for ingredient in ingredients_data:
             IngredientInRecipe.objects.get_or_create(

@@ -2,6 +2,9 @@
 
 ### http://158.160.0.11/ главная страница
 ### http://158.160.0.11/admin админка
+####   mail   - admin@mail.ru
+#### password - qwerty1234
+
 
 [![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
 ## Описание

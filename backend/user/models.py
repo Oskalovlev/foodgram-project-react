@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator
+from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
+
+from .validators import username_validator
 
 
 class User(AbstractUser):
@@ -16,7 +18,10 @@ class User(AbstractUser):
         unique=True,
         blank=False,
         validators=[
-            RegexValidator(regex=settings.CHARACTER_VALIDATOR_USER)
+            RegexValidator(regex=settings.CHARACTER_VALIDATOR_USER),
+            MinValueValidator(3),
+            username_validator
+
         ]
     )
     first_name = models.CharField(
@@ -24,7 +29,8 @@ class User(AbstractUser):
         max_length=settings.DATA_LENGTH_USER,
         blank=False,
         validators=[
-            RegexValidator(regex=settings.CHARACTER_VALIDATOR)
+            RegexValidator(regex=settings.CHARACTER_VALIDATOR),
+            username_validator
         ]
     )
     last_name = models.CharField(
@@ -32,7 +38,8 @@ class User(AbstractUser):
         max_length=settings.DATA_LENGTH_USER,
         blank=False,
         validators=[
-            RegexValidator(regex=settings.CHARACTER_VALIDATOR)
+            RegexValidator(regex=settings.CHARACTER_VALIDATOR),
+            username_validator
         ]
     )
     email = models.EmailField(
