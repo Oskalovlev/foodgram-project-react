@@ -19,7 +19,6 @@ class User(AbstractUser):
         blank=False,
         validators=[
             RegexValidator(regex=settings.CHARACTER_VALIDATOR_USER),
-            MinValueValidator(3),
             username_validator
 
         ]
