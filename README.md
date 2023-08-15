@@ -1,5 +1,8 @@
 # Project «Foodgram» in Docker
 
+### Продуктовый помощник. Может хранить рецепты, которомы можно делиться с другими пользователями. Можно добавить в сприсок избранного лучшие рецепты. Выбрать рецепты и добавить в список покупок. Список покупок форимрует список из продуктов выбранных рецептов. Сохраняет список в 'shop_list.txt'
+
+## Для проверки
 ### http://158.160.0.11/ главная страница
 ### http://158.160.0.11/admin админка
 ####   mail   - admin@mail.ru
@@ -8,22 +11,19 @@
 
 [![API for Foodgram](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?branch=master)](https://github.com/Oskalovlev/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
 ## Описание
-#### Продуктовый помощник. Может хранить рецепты, которомы можно делиться с другими пользователями. 
-#### Можно добавить в сприсок избранного лучшие рецепты. Выбрать рецепты и добавить в список покупок.
-#### Список покупок форимрует список из продуктов выбранных рецептов. Сохраняет список в 'shop_list.txt'   
+   
 
 ## Технологии
-    ```sh
-    - Python 3.10
-    - Django 4.2
-    - Django rest framework 3.14.0
-    - Djoser 2.1.0
-    - Django-filter 23.1
-    - Gunicorn 20.1.0
-    - PostgreSQL 15
-    - Docker 20.10.2
-    - drf-extra-fields 3.4.1
-    ```
+* Python 3.10
+* Django 4.2
+* Django rest framework 3.14.0
+* Djoser 2.1.0
+* Django-filter 23.1
+* Gunicorn 20.1.0
+* PostgreSQL 15
+* Docker 20.10.2
+* drf-extra-fields 3.4.1
+
   PS подробнее в requrements.txt
 
 ## Установка
