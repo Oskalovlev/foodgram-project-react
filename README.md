@@ -14,15 +14,12 @@
    
 
 ## Технологии
-* Python 3.10
-* Django 4.2
-* Django rest framework 3.14.0
-* Djoser 2.1.0
-* Django-filter 23.1
-* Gunicorn 20.1.0
-* PostgreSQL 15
-* Docker 20.10.2
-* drf-extra-fields 3.4.1
+* Python - 3.10
+* Django - 4.2
+* Djoser - 2.1.0
+* Gunicorn - 20.1.0
+* PostgreSQL - 15
+* Docker - 20.10.2
 
   PS подробнее в requrements.txt
 
