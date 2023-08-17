@@ -14,9 +14,9 @@
 ## Технологии
 * Python - 3.10
 * Django - 4.2
+* PostgreSQL - 15
 * Djoser - 2.1.0
 * Gunicorn - 20.1.0
-* PostgreSQL - 15
 * Docker - 20.10.2
 
   PS подробнее в requrements.txt
