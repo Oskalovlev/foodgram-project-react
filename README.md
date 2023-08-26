@@ -57,12 +57,12 @@
     ```
   - Для работы с Workflow добавить в Secrets GitHub переменные окружения для работы:
   - ```sh
-    DB_ENGINE=django.db.backends.postgresql
-    DB_NAME=postgres
-    POSTGRES_USER=postgres
-    POSTGRES_PASSWORD=postgres
-    DB_HOST=db
-    DB_PORT=5432
+    DB_ENGINE=<django.db.backends.postgresql>
+    DB_NAME=<имя БД postgres>
+    DB_USER=<пользователь БД>
+    DB_PASSWORD=<пароль>
+    DB_HOST=<db>
+    DB_PORT=<5432>
     
     DOCKER_PASSWORD=<пароль от DockerHub>
     DOCKER_USERNAME=<имя пользователя>
@@ -113,4 +113,5 @@ Workflow состоит из четырёх шагов:
 ## Примеры API-запросов
   *Подробные примеры запросов приведены в документации ReDoc *
 
-## Автор: Лев Оскалов
+### Автор 
+#### Оскалов Лев
