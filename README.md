@@ -22,15 +22,7 @@
   PS подробнее в requrements.txt
 
 ## Установка
-### Шаблон описания файла .env
-    ```sh
-    - DB_ENGINE=django.db.backends.postgresql
-    - DB_NAME=postgres
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=postgres
-    - DB_HOST=db
-    - DB_PORT=5432
-    ```
+
 ### Инструкции для развертывания и запуска приложения
 для Linux-систем все команды необходимо выполнять от имени администратора
   - Склонировать репозиторий
@@ -53,15 +45,24 @@
     scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
     scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     ```
-  - Создать .env файл по предлагаемому выше шаблону. Обязательно изменить значения POSTGRES_USER и POSTGRES_PASSWORD
-  - Для работы с Workflow добавить в Secrets GitHub переменные окружения для работы:
+  - Создать .env файл по предлагаемому ниже шаблону. Обязательно изменить значения POSTGRES_USER и POSTGRES_PASSWORD
+  - Шаблон описания файла .env
     ```sh
-    DB_ENGINE=<django.db.backends.postgresql>
-    DB_NAME=<имя БД postgres>
-    DB_USER=<пользователь БД>
-    DB_PASSWORD=<пароль>
-    DB_HOST=<db>
-    DB_PORT=<5432>
+    DB_ENGINE=django.db.backends.postgresql
+    DB_NAME=postgres
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=postgres
+    DB_HOST=db
+    DB_PORT=5432
+    ```
+  - Для работы с Workflow добавить в Secrets GitHub переменные окружения для работы:
+  - ```sh
+    DB_ENGINE=django.db.backends.postgresql
+    DB_NAME=postgres
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=postgres
+    DB_HOST=db
+    DB_PORT=5432
     
     DOCKER_PASSWORD=<пароль от DockerHub>
     DOCKER_USERNAME=<имя пользователя>
